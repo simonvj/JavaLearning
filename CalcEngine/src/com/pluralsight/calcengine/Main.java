@@ -6,6 +6,9 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) {
+
+        // here follows a bunch of executions for example
+
         //performCalculations();
         Divider divider = new Divider();
         doCalculation(divider, 100d, 200d);
@@ -17,8 +20,71 @@ public class Main {
             System.out.println("We did it!");
         }
         performMoreCalculations();
-    }
 
+        // enum types/classes can be used in conditional logic
+        FlightCrewJob job1 = FlightCrewJob.PILOT;
+        FlightCrewJob job2 = FlightCrewJob.FLIGHT_ATTENDANT;
+        if(job1 == FlightCrewJob.PILOT)
+            System.out.println("Enum logic!");
+        displayJobResponsibilities(job1);
+        // enum can also be used relatively
+        CrewMember grete = new CrewMember(FlightCrewJob.PILOT, "Grete");
+        CrewMember hans = new CrewMember(FlightCrewJob.FLIGHT_ATTENDANT, "Hans");
+        whoIsInCharge(grete, hans);
+
+        // enum calc operation
+        executeInteractively();
+    }
+    static void executeInteractively(){
+        System.out.println("Enter an operation and two numbers:");
+        Scanner scanner = new Scanner(System.in);
+        String userInput = scanner.nextLine();
+        String[] parts = userInput.split(" ");
+        performOperation(parts);
+    }
+    private static void performOperation(String[] parts){
+        MathOperation operation = MathOperation.valueOf(parts[0].toUpperCase());
+        double x = Double.parseDouble(parts[1]), y = Double.parseDouble(parts[2]);
+        CalculateBase calculation = createCalculation(operation,x,y);
+        calculation.calculate();
+        System.out.println("Operation performed: " + operation);
+        System.out.println(calculation.getResult());
+    }
+    private static CalculateBase createCalculation(MathOperation operation, double x, double y){
+        CalculateBase calculation = null;
+        switch (operation){
+            case ADD:
+                calculation = new Adder(x,y);
+                break;
+            case DIVIDE:
+                calculation = new Divider(x,y);
+                break;
+            case MULTIPLY:
+                calculation = new Multiplier(x,y);
+                break;
+            case SUBSTRACT:
+                calculation = new Substractor(x,y);
+                break;
+        }
+        return calculation;
+    }
+    static void whoIsInCharge(CrewMember m1, CrewMember m2){
+        CrewMember theBoss = (m1.getJob().compareTo(m2.getJob()) > 0) ? m1 : m2;
+        System.out.println(theBoss.getJob().getTitle() + " " + theBoss.getName() + " is boss.");
+    }
+    static void displayJobResponsibilities(FlightCrewJob job){
+        switch (job){
+            case FLIGHT_ATTENDANT:
+                System.out.println("Assures passenger safety.");
+                break;
+            case PILOT:
+                System.out.println("Flies the plane.");
+                break;
+            case CO_PILOT:
+                System.out.println("Assists in flying the plane.");
+                break;
+        }
+    }
     private static void performMoreCalculations(){
         CalculateBase[] calculations = {
                 new Adder(10d, 50d),
@@ -34,8 +100,6 @@ public class Main {
             System.out.println("results = " + calculation.getResult());
         }
     }
-
-
     static void performCalculations(){
         MathEquation[] equations = new MathEquation[4];
         equations[0] = new MathEquation('d', 100.0d, 50.0d);
