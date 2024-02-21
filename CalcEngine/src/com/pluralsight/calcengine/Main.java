@@ -45,7 +45,20 @@ public class Main {
         };
         Arrays.sort(passengers); // utilizes Comparable interface -> Holu, Netflix, Luisa, Frank
          // dynamic using interface
-        dynamicInteractivity();
+        //dynamicInteractivity();
+
+        // nested types
+        Passenger.RewardProgram platinum = new Passenger.RewardProgram();
+        platinum.setMemberLevel(3);
+
+        // Inner classes
+        Flight f11 = new Flight(11);
+        f11.add1Passenger(new Passenger("Luisa",1,180));
+        f11.add1Passenger(new Passenger("Frank", 1, 90));
+        f11.add1Passenger(new Passenger("Holu", 3, 700));
+        f11.add1Passenger(new Passenger("Netflix", 2, 20));
+        for(Passenger p : f11.getOrderedPassengers())
+            System.out.println(p.getName());
     }
     static void executeInteractively(){
         System.out.println("Enter an operation and two numbers:");

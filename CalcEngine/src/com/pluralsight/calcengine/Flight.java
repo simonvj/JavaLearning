@@ -1,6 +1,7 @@
 package com.pluralsight.calcengine;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 
 public class Flight implements Comparable<Flight>, Iterable<Passenger>{
@@ -9,6 +10,21 @@ public class Flight implements Comparable<Flight>, Iterable<Passenger>{
     private char flightClass;
     private boolean[] isSeatAvailable = new boolean[seats];
     private ArrayList<Passenger> passengerList = new ArrayList<>();
+    public Iterable<Passenger> getOrderedPassengers(){
+        // anonymous class
+        /*return new Iterable<Passenger>(){
+            @Override
+            public Iterator<Passenger> iterator(){
+                Passenger[] passengers = new Passenger[passengerList.size()];
+                passengerList.toArray(passengers);
+                Arrays.sort(passengers);
+                return Arrays.asList(passengers).iterator();
+            }
+        };*/
+
+        FlightIterable orderedPassengers = new FlightIterable();
+        return orderedPassengers;
+    }
 
     // This is an initializing block
     {
@@ -26,6 +42,17 @@ public class Flight implements Comparable<Flight>, Iterable<Passenger>{
     }
     public int compareTo(Flight flight){return 1;} //Interface Contract to Comparable
     public Iterator<Passenger> iterator(){return passengerList.iterator();} //Interface Contract to Iterable
+
+    // Inner class
+    private class FlightIterable implements Iterable<Passenger>{
+        @Override
+        public Iterator<Passenger> iterator(){
+            Passenger[] passengers = new Passenger[passengerList.size()];
+            passengerList.toArray(passengers);
+            Arrays.sort(passengers);
+            return Arrays.asList(passengers).iterator();
+        }
+    }
 
 /*    static {
         AdminService admin = new AdminService();
@@ -62,6 +89,7 @@ public class Flight implements Comparable<Flight>, Iterable<Passenger>{
         }
     }
     public void add1Passenger(Passenger p){
+        passengerList.add(p);
         add1Passenger(p.getCheckedBags());
     }
     public void add1Passenger(int bags, int carryOns){
@@ -69,6 +97,7 @@ public class Flight implements Comparable<Flight>, Iterable<Passenger>{
             add1Passenger(bags);
     }
     public void add1Passenger(Passenger p, int carryOns){
+        passengerList.add(p);
         add1Passenger(p.getCheckedBags(),carryOns);
     }
     // variable length parameter list -> becomes array in method
@@ -76,6 +105,7 @@ public class Flight implements Comparable<Flight>, Iterable<Passenger>{
         if(hasSeating(list.length)){
             passengers+=list.length;
             for(Passenger passenger : list){
+                passengerList.add(passenger);
                 totalCheckedBags += passenger.getCheckedBags();
             }
         }
