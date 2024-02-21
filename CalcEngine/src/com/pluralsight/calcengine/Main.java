@@ -1,6 +1,7 @@
 package com.pluralsight.calcengine;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Main {
@@ -33,7 +34,18 @@ public class Main {
         whoIsInCharge(grete, hans);
 
         // enum calc operation
-        executeInteractively();
+        //executeInteractively();
+
+        // comparable interface example
+        Passenger[] passengers = {
+                new Passenger("Luisa", 1, 180),
+                new Passenger("Frank", 1, 90),
+                new Passenger("Holu", 3, 700),
+                new Passenger("Netflix", 2, 20),
+        };
+        Arrays.sort(passengers); // utilizes Comparable interface -> Holu, Netflix, Luisa, Frank
+         // dynamic using interface
+        dynamicInteractivity();
     }
     static void executeInteractively(){
         System.out.println("Enter an operation and two numbers:");
@@ -41,6 +53,19 @@ public class Main {
         String userInput = scanner.nextLine();
         String[] parts = userInput.split(" ");
         performOperation(parts);
+    }
+
+    private static void dynamicInteractivity(){
+        DynamicHelper helper = new DynamicHelper(new MathProcessing[]{
+                new Adder(),
+                new PowerOf()
+        });
+
+        System.out.println("Enter an operation and two numbers: ");
+        Scanner scanner = new Scanner(System.in);
+        String userInput = scanner.nextLine();
+
+        helper.process(userInput);
     }
     private static void performOperation(String[] parts){
         MathOperation operation = MathOperation.valueOf(parts[0].toUpperCase());

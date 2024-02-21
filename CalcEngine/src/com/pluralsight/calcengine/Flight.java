@@ -1,10 +1,14 @@
 package com.pluralsight.calcengine;
 
-public class Flight {
+import java.util.ArrayList;
+import java.util.Iterator;
+
+public class Flight implements Comparable<Flight>, Iterable<Passenger>{
     private int passengers, seats=150, flightNumber;
     private static int allPassengers, maxPassengerPerFlight, totalCheckedBags;
     private char flightClass;
     private boolean[] isSeatAvailable = new boolean[seats];
+    private ArrayList<Passenger> passengerList = new ArrayList<>();
 
     // This is an initializing block
     {
@@ -20,6 +24,8 @@ public class Flight {
         Flight flight = (Flight) o;
         return flightNumber == flight.flightNumber && flightClass == flight.flightClass;
     }
+    public int compareTo(Flight flight){return 1;} //Interface Contract to Comparable
+    public Iterator<Passenger> iterator(){return passengerList.iterator();} //Interface Contract to Iterable
 
 /*    static {
         AdminService admin = new AdminService();
